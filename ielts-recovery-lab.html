@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sam's IELTS Recovery Lab🤷‍♀️</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f11;
+    --bg2: #18181c;
+    --bg3: #222228;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0eee8;
+    --muted: #888680;
+    --hint: #555350;
+    --green: #4ade80;
+    --green-bg: rgba(74,222,128,0.1);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251,191,36,0.1);
+    --red: #f87171;
+    --red-bg: rgba(248,113,113,0.1);
+    --teal: #2dd4bf;
+    --teal-bg: rgba(45,212,191,0.1);
+    --accent: #a78bfa;
+    --accent-bg: rgba(167,139,250,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  /* ---- Layout ---- */
+  #app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  .nav {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 400;
+  }
+
+  .nav-tab:hover { color: var(--text); background: var(--bg3); }
+  .nav-tab.active { color: var(--text); background: var(--bg3); font-weight: 500; }
+
+  .page { display: none; padding: 2rem; max-width: 760px; margin: 0 auto; width: 100%; }
+  .page.active { display: block; }
+
+  /* ---- Cards ---- */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .card + .card { margin-top: 1rem; }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0f0f11;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: var(--bg3);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-danger {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid rgba(248,113,113,0.2);
+  }
+
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+
+  /* ---- Forms ---- */
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+  input[type="text"]::placeholder, textarea::placeholder { color: var(--hint); }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .field { margin-bottom: 1rem; }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+
+  /* ---- Tags / Badges ---- */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .badge-spelling { background: var(--teal-bg); color: var(--teal); }
+  .badge-grammar  { background: var(--amber-bg); color: var(--amber); }
+  .badge-vocab    { background: var(--accent-bg); color: var(--accent); }
+  .badge-paraphrase { background: var(--green-bg); color: var(--green); }
+
+  /* ---- Plant levels ---- */
+  .plant-0 { color: var(--hint); }
+  .plant-1 { color: var(--amber); }
+  .plant-2 { color: var(--green); }
+  .plant-3 { color: #86efac; }
+
+  /* ---- Dashboard ---- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ---- Pattern list ---- */
+  .pattern-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pattern-item:last-child { border-bottom: none; }
+
+  .pattern-word {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .pattern-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .pattern-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--hint);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+  .delete-btn:hover { color: var(--red); }
+
+  /* ---- Practice ---- */
+  #practice-zone { text-align: center; }
+
+  .practice-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 1rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .reveal-word {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
+  .timer-bar {
+    width: 200px;
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .timer-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.1s linear;
+    border-radius: 2px;
+  }
+
+  .practice-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    background: var(--bg3);
+    border: 2px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px 20px;
+    color: var(--text);
+    width: 100%;
+    max-width: 360px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .practice-input:focus { border-color: var(--accent); }
+  .practice-input.correct { border-color: var(--green); background: var(--green-bg); }
+  .practice-input.wrong { border-color: var(--red); background: var(--red-bg); }
+
+  .feedback-text {
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 20px;
+  }
+  .feedback-correct { color: var(--green); }
+  .feedback-wrong { color: var(--red); }
+
+  .hint-text {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ---- Progress bars ---- */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); width: 80px; }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-count { font-size: 13px; color: var(--muted); width: 30px; text-align: right; }
+
+  /* ---- Garden ---- */
+  .garden-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+  }
+
+  .garden-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .garden-icon { font-size: 20px; margin-bottom: 4px; }
+  .garden-word { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); word-break: break-all; }
+
+  /* ---- Boss fight ---- */
+  .boss-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .boss-num {
+    font-size: 13px;
+    color: var(--muted);
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .boss-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    flex: 1;
+  }
+
+  .boss-result {
+    width: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  /* ---- Notification ---- */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.2s;
+    pointer-events: none;
+    z-index: 100;
+    max-width: 260px;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ---- Empty states ---- */
+  .empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 36px; margin-bottom: 8px; }
+  .empty-text { font-size: 14px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 600px) {
+    .nav { padding: 0 1rem; }
+    .page { padding: 1rem; }
+    .nav-logo { font-size: 15px; }
+    .nav-tab { padding: 6px 10px; }
+    .stat-num { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <nav class="nav">
+    <span class="nav-logo">Recovery Lab</span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('dashboard')">Home</button>
+      <button class="nav-tab" onclick="showPage('add')">Add</button>
+      <button class="nav-tab" onclick="showPage('practice')">Practice</button>
+      <button class="nav-tab" onclick="showPage('garden')">Garden</button>
+      <button class="nav-tab" onclick="showPage('boss')">Boss</button>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div style="margin-bottom:1.5rem">
+      <h1 style="font-family:'DM Serif Display',serif; font-size:26px; font-weight:400; margin-bottom:6px;">Today's Lab</h1>
+      <p id="dash-subtitle" style="font-size:14px; color:var(--muted);">Loading your patterns...</p>
+    </div>
+
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <div style="display:flex; gap:10px; margin-bottom:2rem; flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="showPage('practice')">&#9654; Start Practice</button>
+      <button class="btn btn-ghost" onclick="showPage('add')">+ Add Pattern</button>
+    </div>
+
+    <p class="section-title">Recent Patterns</p>
+    <div class="card" id="recent-list"><div class="empty"><div class="empty-text">No patterns yet. Add your first one!</div></div></div>
+  </div>
+
+  <!-- ADD PATTERN -->
+  <div id="page-add" class="page">
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:1.5rem;">Add Pattern</h2>
+
+    <div class="card">
+      <div class="field">
+        <label>Word or Phrase (correct spelling only)</label>
+        <input type="text" id="add-word" placeholder="e.g. transferred">
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <select id="add-cat">
+          <option value="spelling">Spelling</option>
+          <option value="grammar">Grammar</option>
+          <option value="vocab">Vocabulary</option>
+          <option value="paraphrase">Paraphrase / Listening</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Hint / Note (optional)</label>
+        <input type="text" id="add-note" placeholder="e.g. Double letters, means 'moved from place to place'">
+      </div>
+      <button class="btn btn-primary" onclick="addPattern()">Save Pattern</button>
+    </div>
+
+    <hr class="divider">
+    <p class="section-title">All Patterns</p>
+    <div class="card" id="all-list"><div class="empty"><div class="empty-text">Nothing here yet.</div></div></div>
+  </div>
+
+  <!-- PRACTICE -->
+  <div id="page-practice" class="page">
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:0.5rem;">Daily Practice</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:1.5rem;">See it. Hide it. Type it. Build the correct memory.</p>
+
+    <div style="display:flex; gap:8px; margin-bottom:1rem; flex-wrap:wrap;" id="cat-filter">
+      <button class="btn btn-sm btn-ghost active-filter" onclick="setPracticeCat('all', this)">All</button>
+      <button class="btn btn-sm btn-ghost" onclick="setPracticeCat('spelling', this)">Spelling</button>
+      <button class="btn btn-sm btn-ghost" onclick="setPracticeCat('grammar', this)">Grammar</button>
+      <button class="btn btn-sm btn-ghost" onclick="setPracticeCat('vocab', this)">Vocabulary</button>
+      <button class="btn btn-sm btn-ghost" onclick="setPracticeCat('paraphrase', this)">Paraphrase</button>
+    </div>
+
+    <div id="practice-zone">
+      <div class="practice-card" id="practice-card">
+        <p style="color:var(--muted); font-size:14px;">Press Start to begin your session</p>
+      </div>
+      <div id="practice-controls" style="display:flex; justify-content:center; gap:10px;">
+        <button class="btn btn-primary" onclick="startPractice()">Start Session</button>
+      </div>
+    </div>
+
+    <div id="session-stats" style="display:none; margin-top:1.5rem;">
+      <div class="card">
+        <p class="section-title">Session Complete</p>
+        <div id="session-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARDEN -->
+  <div id="page-garden" class="page">
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:0.5rem;">Your Garden 🌱</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:1.5rem;">Every correct pattern becomes a plant. The more you review, the more they grow.</p>
+
+    <div style="display:flex; gap:8px; margin-bottom:1.5rem; flex-wrap:wrap;">
+      <span style="font-size:13px; color:var(--hint);">🌰 New &nbsp; 🌱 Learning &nbsp; 🌿 Growing &nbsp; 🌳 Mastered</span>
+    </div>
+
+    <div style="margin-bottom:1.5rem;" id="progress-bars"></div>
+
+    <div class="garden-grid" id="garden-grid">
+      <div class="empty" style="grid-column:1/-1"><div class="empty-icon">🪴</div><div class="empty-text">Add patterns to grow your garden.</div></div>
+    </div>
+  </div>
+
+  <!-- BOSS FIGHT -->
+  <div id="page-boss" class="page">
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:0.5rem;">⚔ Weekly Boss Fight</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:1.5rem;">No hints. No previews. Just you and your patterns. Prove your mastery.</p>
+
+    <div id="boss-start">
+      <div class="card" style="text-align:center; padding:2.5rem;">
+        <p style="font-size:48px; margin-bottom:1rem;">⚔</p>
+        <p style="font-size:16px; color:var(--muted); margin-bottom:1.5rem;">Face all your patterns with no help. Every correct answer grows your streak.</p>
+        <button class="btn btn-primary" onclick="startBoss()">Begin Challenge</button>
+      </div>
+    </div>
+
+    <div id="boss-quiz" style="display:none;">
+      <div class="card" style="margin-bottom:1rem;">
+        <p class="section-title" style="margin-bottom:1rem;">Type each pattern exactly. No hints!</p>
+        <div id="boss-inputs"></div>
+      </div>
+      <button class="btn btn-primary" onclick="submitBoss()">Submit Answers</button>
+    </div>
+
+    <div id="boss-results" style="display:none;"></div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============================
+   DATA LAYER (localStorage)
+   ============================ */
+
+const STORAGE_KEY = 'ielts_lab_v1';
+
+function getData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { patterns: [] }; }
+  catch(e) { return { patterns: [] }; }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getPatterns() { return getData().patterns; }
+
+function savePattern(p) {
+  const data = getData();
+  data.patterns.push(p);
+  saveData(data);
+}
+
+function deletePattern(id) {
+  const data = getData();
+  data.patterns = data.patterns.filter(p => p.id !== id);
+  saveData(data);
+}
+
+function updateStreak(id, correct) {
+  const data = getData();
+  const p = data.patterns.find(p => p.id === id);
+  if (!p) return;
+  if (correct) {
+    p.streak = (p.streak || 0) + 1;
+    p.lastPracticed = Date.now();
+  } else {
+    p.streak = 0;
+  }
+  saveData(data);
+}
+
+/* ============================
+   NAVIGATION
+   ============================ */
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const tabs = ['dashboard','add','practice','garden','boss'];
+  const idx = tabs.indexOf(name);
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'add') renderAllList();
+  if (name === 'garden') renderGarden();
+  if (name === 'boss') resetBoss();
+}
+
+/* ============================
+   TOAST
+   ============================ */
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* ============================
+   HELPERS
+   ============================ */
+
+function plantIcon(streak) {
+  if (!streak || streak === 0) return '🌰';
+  if (streak < 3) return '🌱';
+  if (streak < 7) return '🌿';
+  return '🌳';
+}
+
+function plantLabel(streak) {
+  if (!streak || streak === 0) return 'New';
+  if (streak < 3) return 'Learning';
+  if (streak < 7) return 'Growing';
+  return 'Mastered';
+}
+
+function catBadge(cat) {
+  const map = { spelling:'badge-spelling', grammar:'badge-grammar', vocab:'badge-vocab', paraphrase:'badge-paraphrase' };
+  const labels = { spelling:'Spelling', grammar:'Grammar', vocab:'Vocab', paraphrase:'Paraphrase' };
+  return `<span class="badge ${map[cat]||''}">${labels[cat]||cat}</span>`;
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+/* ============================
+   DASHBOARD
+   ============================ */
+
+function renderDashboard() {
+  const patterns = getPatterns();
+  const total = patterns.length;
+  const mastered = patterns.filter(p => (p.streak||0) >= 7).length;
+  const learning = patterns.filter(p => (p.streak||0) >= 1 && (p.streak||0) < 7).length;
+  const newOnes  = patterns.filter(p => !(p.streak||0)).length;
+
+  const cats = {};
+  patterns.forEach(p => { cats[p.cat] = (cats[p.cat]||0)+1; });
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total Patterns</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--green)">${mastered}</div><div class="stat-label">Mastered</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--amber)">${learning}</div><div class="stat-label">Learning</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--muted)">${newOnes}</div><div class="stat-label">New</div></div>
+  `;
+
+  const sub = total === 0
+    ? 'Start by adding patterns from your last IELTS practice.'
+    : `${total} pattern${total!==1?'s':''} in your lab. Keep going!`;
+  document.getElementById('dash-subtitle').textContent = sub;
+
+  const recent = [...patterns].reverse().slice(0, 6);
+  const el = document.getElementById('recent-list');
+  if (recent.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-text">No patterns yet. Add your first one!</div></div>';
+    return;
+  }
+  el.innerHTML = recent.map(p => `
+    <div class="pattern-item">
+      <div>
+        <div class="pattern-word">${p.word}</div>
+        ${p.note ? `<div class="pattern-note">${p.note}</div>` : ''}
+      </div>
+      <div class="pattern-actions">
+        ${catBadge(p.cat)}
+        <span style="font-size:18px" title="${plantLabel(p.streak||0)}">${plantIcon(p.streak||0)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================
+   ADD PATTERN
+   ============================ */
+
+function addPattern() {
+  const word = document.getElementById('add-word').value.trim();
+  const cat  = document.getElementById('add-cat').value;
+  const note = document.getElementById('add-note').value.trim();
+
+  if (!word) { toast('Please enter a word or phrase.'); return; }
+
+  const patterns = getPatterns();
+  if (patterns.some(p => p.word.toLowerCase() === word.toLowerCase())) {
+    toast('That pattern is already saved!'); return;
+  }
+
+  savePattern({ id: uid(), word, cat, note, streak: 0, added: Date.now() });
+
+  document.getElementById('add-word').value = '';
+  document.getElementById('add-note').value = '';
+  document.getElementById('add-cat').value = 'spelling';
+
+  toast(`"${word}" added to your lab!`);
+  renderAllList();
+}
+
+function renderAllList() {
+  const patterns = [...getPatterns()].reverse();
+  const el = document.getElementById('all-list');
+  if (patterns.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-text">Nothing here yet.</div></div>';
+    return;
+  }
+  el.innerHTML = patterns.map(p => `
+    <div class="pattern-item">
+      <div>
+        <div class="pattern-word">${p.word}</div>
+        ${p.note ? `<div class="pattern-note">${p.note}</div>` : ''}
+      </div>
+      <div class="pattern-actions">
+        ${catBadge(p.cat)}
+        <span style="font-size:16px" title="${plantLabel(p.streak||0)}">${plantIcon(p.streak||0)}</span>
+        <button class="delete-btn" onclick="deleteP('${p.id}')" title="Delete">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteP(id) {
+  deletePattern(id);
+  renderAllList();
+  toast('Pattern removed.');
+}
+
+/* ============================
+   PRACTICE SESSION
+   ============================ */
+
+let practiceQueue = [];
+let currentIdx = 0;
+let sessionCorrect = 0;
+let sessionTotal = 0;
+let revealTimer = null;
+let practiceCat = 'all';
+const REVEAL_SECS = 3;
+
+function setPracticeCat(cat, btn) {
+  practiceCat = cat;
+  document.querySelectorAll('#cat-filter .btn').forEach(b => b.classList.remove('active-filter'));
+  btn.classList.add('active-filter');
+  resetPractice();
+}
+
+function resetPractice() {
+  document.getElementById('practice-card').innerHTML = '<p style="color:var(--muted); font-size:14px;">Press Start to begin your session</p>';
+  document.getElementById('practice-controls').innerHTML = '<button class="btn btn-primary" onclick="startPractice()">Start Session</button>';
+  document.getElementById('session-stats').style.display = 'none';
+}
+
+function startPractice() {
+  let patterns = getPatterns();
+  if (practiceCat !== 'all') patterns = patterns.filter(p => p.cat === practiceCat);
+  if (patterns.length === 0) { toast('No patterns in this category yet. Add some first!'); return; }
+
+  // Shuffle; prioritise lower streaks
+  practiceQueue = [...patterns].sort((a,b) => (a.streak||0) - (b.streak||0));
+  // Cap at 15 per session
+  practiceQueue = practiceQueue.slice(0, 15);
+
+  currentIdx = 0;
+  sessionCorrect = 0;
+  sessionTotal = practiceQueue.length;
+  document.getElementById('session-stats').style.display = 'none';
+  nextCard();
+}
+
+function nextCard() {
+  if (currentIdx >= practiceQueue.length) {
+    endSession(); return;
+  }
+  const p = practiceQueue[currentIdx];
+  showReveal(p);
+}
+
+function showReveal(p) {
+  clearTimeout(revealTimer);
+  const card = document.getElementById('practice-card');
+  card.innerHTML = `
+    <div style="margin-bottom:4px">${catBadge(p.cat)}</div>
+    <div class="reveal-word">${p.word}</div>
+    ${p.note ? `<div class="hint-text">${p.note}</div>` : ''}
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+    <div style="font-size:12px; color:var(--hint);">${currentIdx+1} of ${practiceQueue.length}</div>
+  `;
+  document.getElementById('practice-controls').innerHTML = '';
+
+  // Animate timer bar
+  let elapsed = 0;
+  const total = REVEAL_SECS * 1000;
+  const step = 50;
+  const timerInterval = setInterval(() => {
+    elapsed += step;
+    const pct = Math.max(0, 100 - (elapsed/total)*100);
+    const fill = document.getElementById('timer-fill');
+    if (fill) fill.style.width = pct + '%';
+    if (elapsed >= total) {
+      clearInterval(timerInterval);
+      showInput(p);
+    }
+  }, step);
+}
+
+function showInput(p) {
+  const card = document.getElementById('practice-card');
+  card.innerHTML = `
+    <div style="margin-bottom:4px">${catBadge(p.cat)}</div>
+    ${p.note ? `<div class="hint-text" style="margin-bottom:12px">${p.note}</div>` : '<div style="height:8px"></div>'}
+    <input class="practice-input" id="practice-input" type="text"
+      placeholder="type it here..."
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div class="feedback-text" id="feedback-text"></div>
+    <div style="font-size:12px; color:var(--hint);">${currentIdx+1} of ${practiceQueue.length}</div>
+  `;
+  document.getElementById('practice-controls').innerHTML = '';
+
+  const input = document.getElementById('practice-input');
+  input.focus();
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkAnswer(p);
+  });
+
+  document.getElementById('practice-controls').innerHTML =
+    '<button class="btn btn-ghost btn-sm" onclick="checkAnswer(practiceQueue[currentIdx])">Check →</button>';
+}
+
+function checkAnswer(p) {
+  const input = document.getElementById('practice-input');
+  if (!input) return;
+  const val = input.value.trim();
+  const correct = val.toLowerCase() === p.word.toLowerCase();
+
+  input.classList.add(correct ? 'correct' : 'wrong');
+  const fb = document.getElementById('feedback-text');
+
+  updateStreak(p.id, correct);
+
+  if (correct) {
+    sessionCorrect++;
+    fb.textContent = '✓ Correct! +1 streak';
+    fb.className = 'feedback-text feedback-correct';
+    document.getElementById('practice-controls').innerHTML = '';
+    setTimeout(() => { currentIdx++; nextCard(); }, 900);
+  } else {
+    fb.innerHTML = `✗ Correct: <span style="font-family:'DM Mono',monospace; font-weight:500">${p.word}</span> — try again`;
+    fb.className = 'feedback-text feedback-wrong';
+    input.disabled = true;
+    document.getElementById('practice-controls').innerHTML =
+      `<button class="btn btn-ghost btn-sm" onclick="currentIdx++;nextCard()">Next →</button>`;
+  }
+}
+
+function endSession() {
+  document.getElementById('practice-card').innerHTML =
+    `<div style="font-size:48px; margin-bottom:8px">${sessionCorrect===sessionTotal?'🎉':'💪'}</div>
+     <div style="font-family:'DM Serif Display',serif; font-size:28px">${sessionCorrect} / ${sessionTotal}</div>
+     <div style="color:var(--muted); font-size:14px; margin-top:4px">${sessionCorrect===sessionTotal?'Perfect session!':'Keep practising — every rep counts.'}</div>`;
+  document.getElementById('practice-controls').innerHTML =
+    '<button class="btn btn-primary" onclick="startPractice()">Practice Again</button>';
+}
+
+/* ============================
+   GARDEN
+   ============================ */
+
+function renderGarden() {
+  const patterns = getPatterns();
+  const el = document.getElementById('garden-grid');
+  const pb = document.getElementById('progress-bars');
+
+  if (patterns.length === 0) {
+    el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🪴</div><div class="empty-text">Add patterns to grow your garden.</div></div>';
+    pb.innerHTML = '';
+    return;
+  }
+
+  const sorted = [...patterns].sort((a,b) => (b.streak||0)-(a.streak||0));
+  el.innerHTML = sorted.map(p => `
+    <div class="garden-item" title="${plantLabel(p.streak||0)}: ${p.streak||0} correct streak">
+      <div class="garden-icon">${plantIcon(p.streak||0)}</div>
+      <div class="garden-word">${p.word}</div>
+    </div>
+  `).join('');
+
+  const levels = [
+    { label:'Mastered', color:'var(--green)', min:7 },
+    { label:'Growing',  color:'var(--teal)',  min:3 },
+    { label:'Learning', color:'var(--amber)', min:1 },
+    { label:'New',      color:'var(--hint)',  min:0 },
+  ];
+  const total = patterns.length;
+  pb.innerHTML = levels.map(l => {
+    const count = patterns.filter(p => {
+      const s = p.streak || 0;
+      if (l.min === 7) return s >= 7;
+      if (l.min === 3) return s >= 3 && s < 7;
+      if (l.min === 1) return s >= 1 && s < 3;
+      return s === 0;
+    }).length;
+    const pct = total ? (count/total*100) : 0;
+    return `<div class="progress-row">
+      <span class="progress-label">${l.label}</span>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${l.color}"></div></div>
+      <span class="progress-count">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ============================
+   BOSS FIGHT
+   ============================ */
+
+let bossPatterns = [];
+
+function resetBoss() {
+  document.getElementById('boss-start').style.display = '';
+  document.getElementById('boss-quiz').style.display = 'none';
+  document.getElementById('boss-results').style.display = 'none';
+}
+
+function startBoss() {
+  const patterns = getPatterns();
+  if (patterns.length === 0) { toast('Add patterns first!'); return; }
+
+  bossPatterns = [...patterns].sort(() => Math.random()-0.5);
+  document.getElementById('boss-start').style.display = 'none';
+  document.getElementById('boss-results').style.display = 'none';
+
+  const inputs = document.getElementById('boss-inputs');
+  inputs.innerHTML = bossPatterns.map((p, i) => `
+    <div class="boss-input-row">
+      <span class="boss-num">${i+1}.</span>
+      <input class="boss-input" type="text" id="boss-${i}"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        placeholder="???"
+        data-cat="${p.cat}">
+      <span class="boss-result" id="boss-r-${i}"></span>
+    </div>
+  `).join('');
+
+  document.getElementById('boss-quiz').style.display = '';
+  document.getElementById('boss-inputs').querySelector('input')?.focus();
+}
+
+function submitBoss() {
+  let correct = 0;
+  bossPatterns.forEach((p, i) => {
+    const input = document.getElementById('boss-' + i);
+    const val = input.value.trim();
+    const ok = val.toLowerCase() === p.word.toLowerCase();
+    if (ok) correct++;
+    document.getElementById('boss-r-' + i).textContent = ok ? '✓' : '✗';
+    document.getElementById('boss-r-' + i).style.color = ok ? 'var(--green)' : 'var(--red)';
+    input.style.color = ok ? 'var(--green)' : 'var(--red)';
+    if (ok) input.style.borderColor = 'var(--green)';
+    else { input.style.borderColor = 'var(--red)'; input.value = p.word; }
+    updateStreak(p.id, ok);
+  });
+
+  const pct = Math.round(correct/bossPatterns.length*100);
+  let emoji = pct === 100 ? '🏆' : pct >= 80 ? '💪' : pct >= 60 ? '📚' : '🌱';
+
+  document.getElementById('boss-results').innerHTML = `
+    <div class="card" style="text-align:center; padding:2rem; margin-top:1rem;">
+      <div style="font-size:48px; margin-bottom:8px">${emoji}</div>
+      <div style="font-family:'DM Serif Display',serif; font-size:32px; margin-bottom:4px">${correct} / ${bossPatterns.length}</div>
+      <div style="color:var(--muted); font-size:14px; margin-bottom:1.5rem;">${pct}% — ${pct===100?'Perfect! You crushed it.':pct>=80?'Strong result!':pct>=60?'Good effort, keep going.':'Keep practising. You\'ll get there.'}</div>
+      <button class="btn btn-ghost" onclick="resetBoss()">Try Again</button>
+    </div>
+  `;
+  document.getElementById('boss-results').style.display = '';
+}
+
+/* ============================
+   INIT
+   ============================ */
+
+renderDashboard();
+
+// Keyboard shortcut: Enter on add pattern
+document.getElementById('add-note').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addPattern();
+});
+document.getElementById('add-word').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('add-note').focus();
+});
+</script>
+</body>
+</html>
